@@ -71,4 +71,5 @@ The following open source projects / sources were used for this project.
 Next up
 ---
 
-Bringing this project to Vorto API Version 2.
+* Bringing this project to Vorto API Version 2.
+* PR to [eclipse/vorto](https://github.com/eclipse/vorto) enhancing the ditto generator with the skeleton template
