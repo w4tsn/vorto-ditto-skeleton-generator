@@ -21,14 +21,12 @@ Adding more generators involes
 Build the docker image with:
 
 ```bash
-cd generator-runner
 docker-compose build
 ```
 
 Test/run with:
 
 ```bash
-cd generator-runner
 docker-compose up # or docker-compose up -d for deamonized mode
 ```
 
