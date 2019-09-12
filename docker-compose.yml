@@ -1,0 +1,24 @@
+version: "3"
+services:
+  repository:
+    depends_on:
+      - db
+    image: eclipsevorto/vorto-repo:0.10.1
+    ports:
+      - "8080:8080"
+    env_file:
+      - "./vorto-variables.env"
+  generators:
+    depends_on:
+      - "repository"
+    build:
+      context: .
+      args:
+        JAR_FILE: ./generator-runner/target/generator-runner-0.0.1-SNAPSHOT-exec.jar
+    env_file:
+      - "./vorto-variables.env"
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - "./vorto-variables.env"
