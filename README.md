@@ -30,6 +30,12 @@ Test/run with:
 docker-compose up # or docker-compose up -d for deamonized mode
 ```
 
+Invoke the generator with:
+
+```bash
+curl -GET http://localhost:8080/api/v1/generators/eclipsedittoskeleton/models/mynamespace:mymodel:1.0.0
+```
+
 Configuration for docker-compose
 ---
 
