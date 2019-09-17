@@ -19,8 +19,8 @@ import org.eclipse.vorto.core.api.model.datatype.PrimitivePropertyType
 import org.eclipse.vorto.core.api.model.datatype.PrimitiveType
 import org.eclipse.vorto.core.api.model.informationmodel.InformationModel
 import org.eclipse.vorto.core.api.model.datatype.DictionaryPropertyType
-import org.eclipse.vorto.codegen.api.IFileTemplate
-import org.eclipse.vorto.codegen.api.InvocationContext
+import org.eclipse.vorto.plugin.generator.InvocationContext
+import org.eclipse.vorto.plugin.generator.utils.IFileTemplate
 
 /**
  * Template that creates a Postman Script (collection) containing the requests 
@@ -28,11 +28,11 @@ import org.eclipse.vorto.codegen.api.InvocationContext
  */
 class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
 
-	override getFileName(InformationModel context) {
-		return "Skeleton_" + context.name + ".json";
+	override getFileName(InformationModel model) {
+		return model.namespace + "_" + model.name + "_" + model.version + "_skeleton.json";
 	}
 
-	override getPath(InformationModel context) {
+	override getPath(InformationModel model) {
 		return null;
 	}
 

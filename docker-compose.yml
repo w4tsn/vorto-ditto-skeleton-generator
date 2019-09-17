@@ -3,18 +3,17 @@ services:
   repository:
     depends_on:
       - db
-    image: eclipsevorto/vorto-repo:0.10.1
+      - generators
+    image: eclipsevorto/vorto-repo:nightly
     ports:
       - "8080:8080"
     env_file:
       - "./vorto-variables.env"
   generators:
-    depends_on:
-      - "repository"
     build:
       context: .
       args:
-        JAR_FILE: ./generator-runner/target/generator-runner-0.0.1-SNAPSHOT-exec.jar
+        JAR_FILE: ./generator-runner/target/generator-runner-3rd-party-exec.jar
     env_file:
       - "./vorto-variables.env"
   db:
