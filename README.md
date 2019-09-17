@@ -33,7 +33,7 @@ docker-compose up # or docker-compose up -d for deamonized mode
 Invoke the generator with:
 
 ```bash
-curl -GET http://localhost:8080/api/v1/generators/eclipsedittoskeleton/models/mynamespace:mymodel:1.0.0
+curl -GET http://localhost:8080/api/v2/generators/eclipsedittoskeleton/models/mynamespace:mymodel:1.0.0
 ```
 
 Configuration for docker-compose
@@ -54,6 +54,7 @@ AUTH_PROVIDER=github
 ADMIN_USER=<your-github-user>
 GITHUB_CLIENT_ID=<your-github-client-id>
 GITHUB_CLIENT_SECRET=<your-github-client-secret>
+PLUGINS=<base64 encoded json structure>
 
 # Generators
 VORTO_URL=http://repository:8080
@@ -63,6 +64,19 @@ VORTO_URL=http://repository:8080
 MYSQL_USER=root
 MYSQL_ROOT_PASSWORD=<your-mysql-password>
 MYSQL_DATABASE=vorto
+```
+
+The plugins json array looks like this:
+
+```json
+[
+    {
+        "key": "eclipsedittoskeletongenerator",
+        "pluginType": "generator",
+        "apiVersion": "2",
+        "endpoint": "http://generator:8080"
+    }
+]
 ```
 
 Resources and Sources

@@ -12,42 +12,41 @@
  */
 package com.othermo.vorto.plugin.dittoskeleton;
 
-import org.eclipse.vorto.codegen.api.GenerationResultZip;
-import org.eclipse.vorto.codegen.api.GeneratorInfo;
-import org.eclipse.vorto.codegen.api.GeneratorTaskFromFileTemplate;
-import org.eclipse.vorto.codegen.api.IGenerationResult;
-import org.eclipse.vorto.codegen.api.IVortoCodeGenProgressMonitor;
-import org.eclipse.vorto.codegen.api.IVortoCodeGenerator;
-import org.eclipse.vorto.codegen.api.InvocationContext;
-import org.eclipse.vorto.codegen.api.VortoCodeGeneratorException;
-import org.eclipse.vorto.codegen.utils.GenerationResultBuilder;
-import org.eclipse.vorto.core.api.model.informationmodel.InformationModel;
-import com.othermo.vorto.plugin.dittoskeleton.templates.ThingSkeletonTemplate;
+import org.eclipse.vorto.plugin.generator.GeneratorException
+import org.eclipse.vorto.plugin.generator.GeneratorPluginInfo
+import org.eclipse.vorto.plugin.generator.ICodeGenerator
+import org.eclipse.vorto.plugin.generator.IGenerationResult
+import org.eclipse.vorto.plugin.generator.InvocationContext
+import org.eclipse.vorto.plugin.generator.utils.GeneratorTaskFromFileTemplate
+import org.eclipse.vorto.plugin.generator.utils.IGeneratedWriter
+import org.eclipse.vorto.plugin.generator.utils.SingleGenerationResult
+import org.eclipse.vorto.core.api.model.informationmodel.InformationModel
+import com.othermo.vorto.plugin.dittoskeleton.templates.ThingSkeletonTemplate
 
 /**
  * Vorto Generator which generates JSON skeleton files for Eclipse Ditto in order to create Things
  * with sane default values.
  */
-class EclipseDittoSkeletonGenerator implements IVortoCodeGenerator {
+class EclipseDittoSkeletonGenerator implements ICodeGenerator {
 
-  override generate(InformationModel infomodel, InvocationContext invocationContext,
-      IVortoCodeGenProgressMonitor monitor) throws VortoCodeGeneratorException {
+  val static String KEY = "eclipsedittoskeleton"
 
-    var output = new GenerationResultZip(infomodel, getServiceKey());
+  override generate(InformationModel infomodel, InvocationContext invocationContext) throws GeneratorException {
+    var IGenerationResult output = null
+    
+    output = new SingleGenerationResult("application/schema+json")
 
-    var template = new GeneratorTaskFromFileTemplate(new ThingSkeletonTemplate())
-    template.generate(infomodel, invocationContext, output)
+    new GeneratorTaskFromFileTemplate(new ThingSkeletonTemplate())
+      .generate(infomodel, invocationContext, output as IGeneratedWriter)
 
     return output
   }
 
-  override getServiceKey() {
-    return "eclipsedittoskeleton";
-  }
-
-  override getInfo() {
-    return GeneratorInfo.basicInfo("Eclipse Ditto Skeleton",
-        "Creates JSON skeleton files in order to get skeleton Things with sane defaults for creation in Eclipse Ditto.",
-        "othermo Team").production();
+  override getMeta() {
+    return GeneratorPluginInfo.Builder(KEY)
+      .withName("Eclipse Ditto Skeleton")
+      .withDescription("Creates JSON skeleton files in order to get skeleton Things with sane defaults for creation in Eclipse Ditto.")
+      .withVendor("othermo Team")
+      .build
   }
 }

@@ -13,8 +13,6 @@
 package com.othermo.vorto.plugin.dittoskeleton.templates;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.vorto.codegen.api.IFileTemplate;
-import org.eclipse.vorto.codegen.api.InvocationContext;
 import org.eclipse.vorto.core.api.model.datatype.DictionaryPropertyType;
 import org.eclipse.vorto.core.api.model.datatype.Entity;
 import org.eclipse.vorto.core.api.model.datatype.EnumLiteral;
@@ -24,12 +22,10 @@ import org.eclipse.vorto.core.api.model.datatype.PrimitiveType;
 import org.eclipse.vorto.core.api.model.datatype.Property;
 import org.eclipse.vorto.core.api.model.datatype.PropertyType;
 import org.eclipse.vorto.core.api.model.datatype.Type;
-import org.eclipse.vorto.core.api.model.functionblock.Configuration;
-import org.eclipse.vorto.core.api.model.functionblock.FunctionBlock;
-import org.eclipse.vorto.core.api.model.functionblock.FunctionblockModel;
-import org.eclipse.vorto.core.api.model.functionblock.Status;
 import org.eclipse.vorto.core.api.model.informationmodel.FunctionblockProperty;
 import org.eclipse.vorto.core.api.model.informationmodel.InformationModel;
+import org.eclipse.vorto.plugin.generator.InvocationContext;
+import org.eclipse.vorto.plugin.generator.utils.IFileTemplate;
 import org.eclipse.xtend2.lib.StringConcatenation;
 
 /**
@@ -39,14 +35,19 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 @SuppressWarnings("all")
 public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
   @Override
-  public String getFileName(final InformationModel context) {
-    String _name = context.getName();
-    String _plus = ("Skeleton_" + _name);
-    return (_plus + ".json");
+  public String getFileName(final InformationModel model) {
+    String _namespace = model.getNamespace();
+    String _plus = (_namespace + "_");
+    String _name = model.getName();
+    String _plus_1 = (_plus + _name);
+    String _plus_2 = (_plus_1 + "_");
+    String _version = model.getVersion();
+    String _plus_3 = (_plus_2 + _version);
+    return (_plus_3 + "_skeleton.json");
   }
   
   @Override
-  public String getPath(final InformationModel context) {
+  public String getPath(final InformationModel model) {
     return null;
   }
   
@@ -112,16 +113,13 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
         _builder.append("\t\t");
         _builder.append("\t");
         _builder.append("\"definition\": [\"");
-        FunctionblockModel _type = fbProperty.getType();
-        String _namespace_1 = _type.getNamespace();
+        String _namespace_1 = fbProperty.getType().getNamespace();
         _builder.append(_namespace_1, "\t\t\t");
         _builder.append(":");
-        FunctionblockModel _type_1 = fbProperty.getType();
-        String _name_2 = _type_1.getName();
+        String _name_2 = fbProperty.getType().getName();
         _builder.append(_name_2, "\t\t\t");
         _builder.append(":");
-        FunctionblockModel _type_2 = fbProperty.getType();
-        String _version_1 = _type_2.getVersion();
+        String _version_1 = fbProperty.getType().getVersion();
         _builder.append(_version_1, "\t\t\t");
         _builder.append("\"],");
         _builder.newLineIfNotEmpty();
@@ -130,34 +128,15 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
         _builder.append("\"properties\": {");
         _builder.newLine();
         {
-          boolean _and = false;
-          FunctionblockModel _type_3 = fbProperty.getType();
-          FunctionBlock _functionblock = _type_3.getFunctionblock();
-          Configuration _configuration = _functionblock.getConfiguration();
-          boolean _tripleNotEquals = (_configuration != null);
-          if (!_tripleNotEquals) {
-            _and = false;
-          } else {
-            FunctionblockModel _type_4 = fbProperty.getType();
-            FunctionBlock _functionblock_1 = _type_4.getFunctionblock();
-            Configuration _configuration_1 = _functionblock_1.getConfiguration();
-            EList<Property> _properties_1 = _configuration_1.getProperties();
-            boolean _isEmpty = _properties_1.isEmpty();
-            boolean _not = (!_isEmpty);
-            _and = _not;
-          }
-          if (_and) {
+          if (((fbProperty.getType().getFunctionblock().getConfiguration() != null) && (!fbProperty.getType().getFunctionblock().getConfiguration().getProperties().isEmpty()))) {
             _builder.append("\t\t");
             _builder.append("\t\t");
             _builder.append("\"configuration\": {");
             _builder.newLine();
             {
-              FunctionblockModel _type_5 = fbProperty.getType();
-              FunctionBlock _functionblock_2 = _type_5.getFunctionblock();
-              Configuration _configuration_2 = _functionblock_2.getConfiguration();
-              EList<Property> _properties_2 = _configuration_2.getProperties();
+              EList<Property> _properties_1 = fbProperty.getType().getFunctionblock().getConfiguration().getProperties();
               boolean _hasElements_1 = false;
-              for(final Property configProperty : _properties_2) {
+              for(final Property configProperty : _properties_1) {
                 if (!_hasElements_1) {
                   _hasElements_1 = true;
                 } else {
@@ -171,20 +150,20 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                 _builder.append(_name_3, "\t\t\t\t\t");
                 _builder.append("\" : ");
                 {
-                  PropertyType _type_6 = configProperty.getType();
-                  if ((_type_6 instanceof PrimitivePropertyType)) {
-                    PropertyType _type_7 = configProperty.getType();
-                    Object _jsonPrimitive = this.getJsonPrimitive(((PrimitivePropertyType) _type_7));
+                  PropertyType _type = configProperty.getType();
+                  if ((_type instanceof PrimitivePropertyType)) {
+                    PropertyType _type_1 = configProperty.getType();
+                    Object _jsonPrimitive = this.getJsonPrimitive(((PrimitivePropertyType) _type_1));
                     _builder.append(_jsonPrimitive, "\t\t\t\t\t");
                   } else {
-                    PropertyType _type_8 = configProperty.getType();
-                    if ((_type_8 instanceof ObjectPropertyType)) {
-                      PropertyType _type_9 = configProperty.getType();
-                      String _jsonObjectType = this.getJsonObjectType(((ObjectPropertyType) _type_9));
+                    PropertyType _type_2 = configProperty.getType();
+                    if ((_type_2 instanceof ObjectPropertyType)) {
+                      PropertyType _type_3 = configProperty.getType();
+                      String _jsonObjectType = this.getJsonObjectType(((ObjectPropertyType) _type_3));
                       _builder.append(_jsonObjectType, "\t\t\t\t\t");
                     } else {
-                      PropertyType _type_10 = configProperty.getType();
-                      CharSequence _jsonDictionaryType = this.getJsonDictionaryType(((DictionaryPropertyType) _type_10));
+                      PropertyType _type_4 = configProperty.getType();
+                      CharSequence _jsonDictionaryType = this.getJsonDictionaryType(((DictionaryPropertyType) _type_4));
                       _builder.append(_jsonDictionaryType, "\t\t\t\t\t");
                     }
                   }
@@ -196,23 +175,7 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
             _builder.append("\t\t");
             _builder.append("}");
             {
-              boolean _and_1 = false;
-              FunctionblockModel _type_11 = fbProperty.getType();
-              FunctionBlock _functionblock_3 = _type_11.getFunctionblock();
-              Status _status = _functionblock_3.getStatus();
-              boolean _tripleNotEquals_1 = (_status != null);
-              if (!_tripleNotEquals_1) {
-                _and_1 = false;
-              } else {
-                FunctionblockModel _type_12 = fbProperty.getType();
-                FunctionBlock _functionblock_4 = _type_12.getFunctionblock();
-                Status _status_1 = _functionblock_4.getStatus();
-                EList<Property> _properties_3 = _status_1.getProperties();
-                boolean _isEmpty_1 = _properties_3.isEmpty();
-                boolean _not_1 = (!_isEmpty_1);
-                _and_1 = _not_1;
-              }
-              if (_and_1) {
+              if (((fbProperty.getType().getFunctionblock().getStatus() != null) && (!fbProperty.getType().getFunctionblock().getStatus().getProperties().isEmpty()))) {
                 _builder.append(",");
               }
             }
@@ -220,34 +183,15 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
           }
         }
         {
-          boolean _and_2 = false;
-          FunctionblockModel _type_13 = fbProperty.getType();
-          FunctionBlock _functionblock_5 = _type_13.getFunctionblock();
-          Status _status_2 = _functionblock_5.getStatus();
-          boolean _tripleNotEquals_2 = (_status_2 != null);
-          if (!_tripleNotEquals_2) {
-            _and_2 = false;
-          } else {
-            FunctionblockModel _type_14 = fbProperty.getType();
-            FunctionBlock _functionblock_6 = _type_14.getFunctionblock();
-            Status _status_3 = _functionblock_6.getStatus();
-            EList<Property> _properties_4 = _status_3.getProperties();
-            boolean _isEmpty_2 = _properties_4.isEmpty();
-            boolean _not_2 = (!_isEmpty_2);
-            _and_2 = _not_2;
-          }
-          if (_and_2) {
+          if (((fbProperty.getType().getFunctionblock().getStatus() != null) && (!fbProperty.getType().getFunctionblock().getStatus().getProperties().isEmpty()))) {
             _builder.append("\t\t");
             _builder.append("\t\t");
             _builder.append("\"status\": {");
             _builder.newLine();
             {
-              FunctionblockModel _type_15 = fbProperty.getType();
-              FunctionBlock _functionblock_7 = _type_15.getFunctionblock();
-              Status _status_4 = _functionblock_7.getStatus();
-              EList<Property> _properties_5 = _status_4.getProperties();
+              EList<Property> _properties_2 = fbProperty.getType().getFunctionblock().getStatus().getProperties();
               boolean _hasElements_2 = false;
-              for(final Property statusProperty : _properties_5) {
+              for(final Property statusProperty : _properties_2) {
                 if (!_hasElements_2) {
                   _hasElements_2 = true;
                 } else {
@@ -261,20 +205,20 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                 _builder.append(_name_4, "\t\t\t\t\t");
                 _builder.append("\" : ");
                 {
-                  PropertyType _type_16 = statusProperty.getType();
-                  if ((_type_16 instanceof PrimitivePropertyType)) {
-                    PropertyType _type_17 = statusProperty.getType();
-                    Object _jsonPrimitive_1 = this.getJsonPrimitive(((PrimitivePropertyType) _type_17));
+                  PropertyType _type_5 = statusProperty.getType();
+                  if ((_type_5 instanceof PrimitivePropertyType)) {
+                    PropertyType _type_6 = statusProperty.getType();
+                    Object _jsonPrimitive_1 = this.getJsonPrimitive(((PrimitivePropertyType) _type_6));
                     _builder.append(_jsonPrimitive_1, "\t\t\t\t\t");
                   } else {
-                    PropertyType _type_18 = statusProperty.getType();
-                    if ((_type_18 instanceof ObjectPropertyType)) {
-                      PropertyType _type_19 = statusProperty.getType();
-                      String _jsonObjectType_1 = this.getJsonObjectType(((ObjectPropertyType) _type_19));
+                    PropertyType _type_7 = statusProperty.getType();
+                    if ((_type_7 instanceof ObjectPropertyType)) {
+                      PropertyType _type_8 = statusProperty.getType();
+                      String _jsonObjectType_1 = this.getJsonObjectType(((ObjectPropertyType) _type_8));
                       _builder.append(_jsonObjectType_1, "\t\t\t\t\t");
                     } else {
-                      PropertyType _type_20 = statusProperty.getType();
-                      CharSequence _jsonDictionaryType_1 = this.getJsonDictionaryType(((DictionaryPropertyType) _type_20));
+                      PropertyType _type_9 = statusProperty.getType();
+                      CharSequence _jsonDictionaryType_1 = this.getJsonDictionaryType(((DictionaryPropertyType) _type_9));
                       _builder.append(_jsonDictionaryType_1, "\t\t\t\t\t");
                     }
                   }
@@ -326,15 +270,13 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
       if (_isEmpty) {
         return "\"\"";
       } else {
-        EnumLiteral _get = literals.get(0);
-        String _name = _get.getName();
+        String _name = literals.get(0).getName();
         String _plus = ("\"" + _name);
         return (_plus + "\"");
       }
     } else {
       Type _type_2 = propertyType.getType();
-      CharSequence _entityJson = this.getEntityJson(((Entity) _type_2));
-      return _entityJson.toString();
+      return this.getEntityJson(((Entity) _type_2)).toString();
     }
   }
   

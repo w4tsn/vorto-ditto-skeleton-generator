@@ -10,6 +10,6 @@ public class GeneratorConfiguration extends AbstractGeneratorConfiguration {
 	
 	@Override
 	protected void doSetup() {
-		addGenerator(Generator.create("/generators/eclipsedittoskeletongenerator.properties", EclipseDittoSkeletonGenerator.class));
+		addGenerator(Generator.create("/generators/eclipsedittoskeletongenerator.properties", new CodeGeneratorV1Adapter(new EclipseDittoSkeletonGenerator())));
 	}
 }

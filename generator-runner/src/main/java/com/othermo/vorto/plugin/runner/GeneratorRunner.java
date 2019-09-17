@@ -9,10 +9,10 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @ComponentScan(basePackages={"org.eclipse.vorto.codegen.spi.config",
-							"org.eclipse.vorto.codegen.spi.controllers",
-							"org.eclipse.vorto.codegen.spi.repository",
-							"org.eclipse.vorto.codegen.spi.service","com.othermo.vorto.plugin.runner"},excludeFilters = {@ComponentScan.Filter(
-	    type = FilterType.ASSIGNABLE_TYPE)})
+		"org.eclipse.vorto.codegen.spi.controllers",
+		"org.eclipse.vorto.codegen.spi.repository",
+		"org.eclipse.vorto.codegen.spi.service","com.othermo.vorto.plugin.runner"},excludeFilters = {@ComponentScan.Filter(
+type = FilterType.ASSIGNABLE_TYPE)})
 public class GeneratorRunner {
 
 	@Bean
