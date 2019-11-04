@@ -150,6 +150,12 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                 _builder.append(_name_3, "\t\t\t\t\t");
                 _builder.append("\" : ");
                 {
+                  boolean _isMultiplicity = configProperty.isMultiplicity();
+                  if (_isMultiplicity) {
+                    _builder.append("[");
+                  }
+                }
+                {
                   PropertyType _type = configProperty.getType();
                   if ((_type instanceof PrimitivePropertyType)) {
                     PropertyType _type_1 = configProperty.getType();
@@ -166,6 +172,12 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                       CharSequence _jsonDictionaryType = this.getJsonDictionaryType(((DictionaryPropertyType) _type_4));
                       _builder.append(_jsonDictionaryType, "\t\t\t\t\t");
                     }
+                  }
+                }
+                {
+                  boolean _isMultiplicity_1 = configProperty.isMultiplicity();
+                  if (_isMultiplicity_1) {
+                    _builder.append("]");
                   }
                 }
                 _builder.newLineIfNotEmpty();
@@ -205,6 +217,12 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                 _builder.append(_name_4, "\t\t\t\t\t");
                 _builder.append("\" : ");
                 {
+                  boolean _isMultiplicity_2 = statusProperty.isMultiplicity();
+                  if (_isMultiplicity_2) {
+                    _builder.append("[");
+                  }
+                }
+                {
                   PropertyType _type_5 = statusProperty.getType();
                   if ((_type_5 instanceof PrimitivePropertyType)) {
                     PropertyType _type_6 = statusProperty.getType();
@@ -221,6 +239,12 @@ public class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
                       CharSequence _jsonDictionaryType_1 = this.getJsonDictionaryType(((DictionaryPropertyType) _type_9));
                       _builder.append(_jsonDictionaryType_1, "\t\t\t\t\t");
                     }
+                  }
+                }
+                {
+                  boolean _isMultiplicity_3 = statusProperty.isMultiplicity();
+                  if (_isMultiplicity_3) {
+                    _builder.append("]");
                   }
                 }
                 _builder.newLineIfNotEmpty();
