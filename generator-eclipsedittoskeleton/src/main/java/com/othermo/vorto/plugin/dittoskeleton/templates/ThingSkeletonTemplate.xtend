@@ -54,14 +54,14 @@ class ThingSkeletonTemplate implements IFileTemplate<InformationModel> {
 							«IF fbProperty.type.functionblock.configuration !== null && !fbProperty.type.functionblock.configuration.properties.isEmpty»
 							"configuration": {
 								«FOR configProperty : fbProperty.type.functionblock.configuration.properties SEPARATOR ","»
-									"«configProperty.name»" : «IF configProperty.type instanceof PrimitivePropertyType»«getJsonPrimitive(configProperty.type as PrimitivePropertyType)»«ELSEIF configProperty.type instanceof ObjectPropertyType»«getJsonObjectType(configProperty.type as ObjectPropertyType)»«ELSE»«getJsonDictionaryType(configProperty.type as DictionaryPropertyType)»«ENDIF»
+									"«configProperty.name»" : «IF configProperty.isMultiplicity»[«ENDIF»«IF configProperty.type instanceof PrimitivePropertyType»«getJsonPrimitive(configProperty.type as PrimitivePropertyType)»«ELSEIF configProperty.type instanceof ObjectPropertyType»«getJsonObjectType(configProperty.type as ObjectPropertyType)»«ELSE»«getJsonDictionaryType(configProperty.type as DictionaryPropertyType)»«ENDIF»«IF configProperty.isMultiplicity»]«ENDIF»
 								«ENDFOR»
 							}«IF fbProperty.type.functionblock.status !== null && !fbProperty.type.functionblock.status.properties.isEmpty»,«ENDIF»
 							«ENDIF»
 							«IF fbProperty.type.functionblock.status !== null && !fbProperty.type.functionblock.status.properties.isEmpty»
 							"status": {
 								«FOR statusProperty : fbProperty.type.functionblock.status.properties SEPARATOR ","»
-									"«statusProperty.name»" : «IF statusProperty.type instanceof PrimitivePropertyType»«getJsonPrimitive(statusProperty.type as PrimitivePropertyType)»«ELSEIF statusProperty.type instanceof ObjectPropertyType»«getJsonObjectType(statusProperty.type as ObjectPropertyType)»«ELSE»«getJsonDictionaryType(statusProperty.type as DictionaryPropertyType)»«ENDIF»
+									"«statusProperty.name»" : «IF statusProperty.isMultiplicity»[«ENDIF»«IF statusProperty.type instanceof PrimitivePropertyType»«getJsonPrimitive(statusProperty.type as PrimitivePropertyType)»«ELSEIF statusProperty.type instanceof ObjectPropertyType»«getJsonObjectType(statusProperty.type as ObjectPropertyType)»«ELSE»«getJsonDictionaryType(statusProperty.type as DictionaryPropertyType)»«ENDIF»«IF statusProperty.isMultiplicity»]«ENDIF»
 								«ENDFOR»
 							}
 							«ENDIF»
